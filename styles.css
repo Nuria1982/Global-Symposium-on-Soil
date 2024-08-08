@@ -1,0 +1,78 @@
+/*-- scss:rules --*/
+.title {
+  font-size: 40px !important;
+  color: #f9e79f !important;
+  text-align: center;
+  position: relative;
+  bottom: -170px;
+  right: -230px;
+  font-weight: bold; 
+}
+.quarto-title-author-name {
+  font-size: 30px;
+  color: #f7dc6f !important;
+  position: relative;
+  bottom: -200px;
+  left: 250px;
+  font-weight: bold; 
+}
+.reveal .slides {
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+}
+.revealjs, .title-slide-attributes, .data-background-image {
+  opacity: 0.3;
+}
+.slide-number, .reveal.has-logo .slide-number {
+  up: 5px !important;
+  right: 10px !important;
+  top: unset !important;
+  color: $body-color !important;
+}
+.slide-title {
+  font-size: 36px; 
+  font-weight: bold; 
+  text-align: center; 
+  margin: 0; 
+  padding: 20px 0; 
+}
+.image-container {
+  text-align: center; 
+  margin: 0 auto; 
+}
+
+.image-caption {
+  font-size: 20px; 
+  color: #666; 
+  margin-top: 8px; 
+}
+.center {
+  display: flex;
+  justify-content: center;
+}
+.text-center {
+  text-align: center;
+}
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%; 
+  text-align: center;
+  margin-top: 70px; 
+}
+.links {
+  position: absolute; 
+  bottom: -420px; 
+  left: 250px; 
+  color: black; 
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.links a {
+  display: block; 
+  margin-bottom: 5px; 
+  text-align: center;
+}

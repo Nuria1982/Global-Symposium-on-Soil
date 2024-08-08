@@ -1,0 +1,295 @@
+---
+title: "Factors influencing spatial variability of N2O emissions across diverse land use types in Argentina: A structural equation modeling approach"
+author: phD. Nuria Lewczuk - Argentina
+format: 
+  revealjs: 
+    slide-number: c/t
+    theme: default
+    transition: slide
+    title-slide-attributes: 
+      data-background-image: imagen.jpg
+    progress: true
+    css: styles.css
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Alguna foto
+
+##  {background-image="imagen6.jpg" background-opacity="0.4"}
+
+::: {.fragment .text-center .text-space}
+***Food security has become an issue of global concern, especially in developing countries. It is projected that, by 2050, food production will need to increase by 50% compared to 2012 to meet ever-growing food demands.***
+:::
+
+::: {.fragment .fade-in .text-center}
+***Agriculture, which occupies more than 40% of the earth's land surface and contributes significantly to global greenhouse gas emissions, must adopt sustainable policies and practices.***
+:::
+
+## {background-image="imagen6.jpg" background-opacity="0.4"}
+::: {.fragment .text-center}
+<p style="font-size: 26px;">
+***Argentina has a great diversity of environments due to its latitudinal extension (from the Province of Jujuy: Latitude 21º 46' 52" S; Longitude 66º 13' 17" W to the Province of Tierra del Fuego, Antarctica and South Atlantic Islands: Latitude 55º 03' 21" S; Longitude 66º 31' 25" W).***
+</p>
+:::
+
+::: columns 
+::: {.column width="33%"}
+::: {.fragment .fade-in}
+::: {.fragment .semi-fade-out}
+<div class="image-container">
+  ![](mapa-suelos-inta.jpg){fig-alt="Mapa tipos de suelos de Argentina" width="90%" height="70%"}
+    <div class="image-caption">Soil types</div>
+</div>
+:::
+:::
+:::
+
+::: {.column width="33%"}
+::: {.fragment .fade-in}
+::: {.fragment .semi-fade-out}
+<div class="image-container">
+   ![](TmedAnual-9120.webp){fig-alt="Mapa temp media anual de Argentina"}
+   <div class="image-caption">Average annual temperature</div>
+</div>
+:::
+:::
+:::
+
+::: {.column width="33%"}
+::: {.fragment .fade-in}
+::: {.fragment .semi-fade-out}
+   <div class="image-container">
+  ![](LluvAnual-9120.webp){fig-alt="Mapa pp media anual de Argentina" width="90%" height="70%"}
+  <div class="image-caption">average annual precipitation</div>
+</div>
+:::
+:::
+:::
+:::
+
+
+##  {background-image="imagen6.jpg" background-opacity="0.4" .smaller} 
+
+::: columns
+::: {.column width="50%"}
+![](imagen1.jpg){fig-alt="Mapa puntos Red de Nitroso" width="90%" height="50%"} 
+:::
+
+::: {.column width="10%"}
+::: 
+
+::: {.column width="30%"}
+::: {.centered-content}
+::: incremental
+- 2014 - 2015
+- 9 sites
+- 10 - 17 data per site
+- 3 - 6 replicates
+- 2 - 3 sub-samples
+- 2 - 3 paired plots (natural system vs. crops)
+- 2696 N2O flux data
+- 30 variables
+:::
+:::
+:::
+:::
+
+# {background-image="imagen6.jpg" background-opacity="0.4"}
+::: {.fragment .text-center}
+<p style="font-size: 36px;">
+***Quantifying behavior often involves using variables that contain measurement errors and formulating multiequations to capture the relationship among a set of variables. (Bollen & Noble, 2011)***
+</p>
+:::
+
+##  {background-image="imagen6.jpg" background-opacity="0.4"} 
+<div class="slide-title">Structural Equation Model</div>
+
+::: columns
+::: {.column width="33%"}
+::: {.fragment .fade-in .text-center}
+**Structural**
+:::
+::: {.fragment .fade-in .text-center}
+There is a hypothetical structure inherent to nature
+:::
+:::
+
+::: {.column width="33%"}
+::: {.fragment .fade-in .text-center}
+**Equation**
+:::
+::: {.fragment .fade-in .text-center}
+Which we can explain in mathematical equations
+:::
+:::
+
+::: {.column width="33%"}
+::: {.fragment .fade-in .text-center}
+**Model**
+:::
+::: {.fragment .fade-in .text-center}
+And then we can model these equations with real data to confirm or refute these hypotheses.
+:::
+:::
+
+:::{.fragment .fade-in .text-center .callout-important appearance="simple" }
+***We want to mathematically represent the relationships between observed and unobserved variables to better understand the underlying structure of a phenomenon or system.***
+:::
+:::
+
+## {background-image="imagen6.jpg" background-opacity="0.4"}
+```{r, echo=FALSE}
+
+library(nlme)
+library(lme4)
+library(piecewiseSEM)
+library(tidyverse)
+library(ggplot2)
+library(hrbrthemes)
+library(viridis)
+
+setwd("E:/TRABAJO/Red de monitoreo N2O/paper/analisis datos")
+library(readxl)
+sitio <- read_excel("sitio.xlsx", col_types = c("text", 
+                                                "numeric", "text", "text", "numeric", 
+                                                "text", "numeric", "numeric", "numeric", 
+                                                "numeric", "numeric", "numeric", "numeric", 
+                                                "numeric", "numeric", "numeric", "numeric", 
+                                                "numeric", "numeric", "numeric", "numeric", 
+                                                "numeric", "numeric", "numeric", "numeric", 
+                                                "numeric", "numeric"))
+```
+
+::: columns
+::: {.column width="50%" .center}
+```{r, echo=FALSE, fig.width=20, fig.height=15}
+colores_landuse <- c("crop" = "skyblue", 
+                     "natural" = "salmon"
+)
+ggplot(sitio, 
+       aes(x = landuse, 
+           y = n2o, 
+           fill = landuse)) +
+  geom_violin(alpha = 0.8) +
+  geom_boxplot(width = 0.1,
+               color = "black") +
+  labs(title = "",
+       x = "Land Use",
+       y = expression(atop("N"[2]*"O",
+                           "(gN-N"[2]*"O ha"^"-1"*")"))) +
+  scale_fill_manual(values = colores_landuse) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.title.x = element_text(size = 36),
+        axis.title.y = element_text(size = 36),
+        axis.text.x = element_text(size = 36))
+
+```
+:::
+
+::: {.column width="50%" .center}
+```{r, echo=FALSE, fig.width=20, fig.height=15}
+ggplot(sitio, 
+       aes(x=landuse, 
+           y=n2o, 
+           fill=landuse)) +
+  geom_boxplot() +
+  facet_wrap(~Sites, scale="free") +
+  scale_fill_manual(values = colores_landuse) +
+  labs(title = "", 
+       x = "", 
+       y = expression(atop("N"[2]*"O", "(gN-N"[2]*"O ha"^"-1"*")"))) +
+  theme(legend.text = element_text(size = 36),
+        legend.title = element_text(size = 36),
+        axis.title.y = element_text(size = 36),
+        axis.title.x = element_blank(),  
+        axis.text.x = element_blank(),
+        strip.text = element_text(size = 36))
+```
+:::
+:::
+
+## {background-image="imagen6.jpg" background-opacity="0.4"}
+**PiecewiseSEM**^[https://cran.r-project.org/web/packages/piecewiseSEM/index.html]
+
+```{r, echo=TRUE}
+#| code-line-numbers: "1|3-6|8-11|1-33"
+
+sitio.sem1 <- psem(
+  
+  lme(n2o ~ crop + SoilTemp + AirTemp + VH + WFPS + NO3 + NH4 + totalC, 
+      random = ~1|Sites/Bloque, 
+      na.action = na.exclude,
+      data = sitio),
+  
+  lme(WFPS ~ crop + VH + Silt + Clay + MAT + AP,
+      random = ~1|Sites/Bloque,
+      na.action = na.exclude,
+      data = sitio),
+
+  lme(NO3 ~ crop + Silt + Clay + totalC + NH4 + SoilTemp + WFPS + MAT + AP,
+      random = ~1|Sites/Bloque,
+      na.action = na.exclude,
+      data = sitio),
+
+  lme(NH4 ~ crop + Silt + Clay + totalC + MAT + AP,
+      random = ~1|Sites/Bloque,
+      na.action = na.omit,
+      data = sitio),
+
+  lme(SoilTemp ~ crop + AirTemp + Clay + MAT + AP,
+      random = ~1|Sites/Bloque,
+      na.action = na.exclude,
+      data = sitio),
+
+  lme(AirTemp ~ crop + MAT + AP,
+      random = ~1|Sites/Bloque,
+      na.action = na.exclude,
+     data = sitio),
+
+  sitio)
+```
+
+
+## {background-image="imagen6.jpg" background-opacity="0.4"}
+![](Imagen3.jpg){fig-align="center"}
+
+## {background-image="imagen6.jpg" background-opacity="0.4"}
+![](Imagen4.jpg){fig-align="center"}
+
+## {background-image="imagen6.jpg" background-opacity="0.4"}
+
+**Agricultural systems vs. natural systems**
+
+::: incremental
+-   more than doubled N2O emissions (+120%)
+
+-   higher soil water contents (+9%)
+
+-   higher soil temperatures (+3%)
+
+-   more nitrate in the soil (+19%)
+
+-   less ammonium (-33%)
+:::
+
+# Alguna foto
+
+## {background-image="imagen6.jpg" background-opacity="0.4"}
+
+::: {.fragment .fade-in .text-center .text-space}
+**Land use type was the main driver of N2O emissions by directly affecting soil NO3 contents in both natural ecosystems and croplands.**
+:::
+
+::: {.fragment .text-center}
+**Urgent management practices aimed at reducing N2O emissions from croplands are needed to mitigate their contributions to global climate change.**
+:::
+
+# {background-image="imagen5.jpg" background-opacity="1"}
+
+<p class="links">
+  <a href="https://www.linkedin.com/in/nurialewczuk/">https://www.linkedin.com/in/nurialewczuk/</a>
+  <br>
+  <a href="https://www.researchgate.net/profile/Nuria-Lewczuk-2">https://www.researchgate.net/profile/Nuria-Lewczuk-2</a>
+</p>
